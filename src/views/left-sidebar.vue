@@ -23,7 +23,7 @@ const links = [
 
 <template>
   <div
-    class="w-2/12 h-[calc(100vh-80px)] flex flex-col items-center justify-between py-6 border-r-2 border-light-gray"
+    class="w-3/12 h-[calc(100vh-80px)] flex flex-col items-center justify-between py-6 border-r-2 border-light-gray"
   >
     <div class="flex flex-col justify-center items-center gap-y-1">
       <app-avatar

@@ -1,5 +1,7 @@
 .contacts__list {
-  @apply flex flex-col gap-y-1 px-1 mt-2 relative;
+  @apply flex flex-col gap-y-1 px-1 mt-2;
+  overflow: auto;
+  height: 100%;
 }
 
 .contact__list-item {
