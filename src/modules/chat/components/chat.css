@@ -1,0 +1,41 @@
+.contacts__list {
+  @apply flex flex-col gap-y-1 px-1 mt-2 relative;
+}
+
+.contact__list-item {
+  @apply bg-light-gray p-1 px-2 flex items-center gap-5 h-[80px] rounded-md cursor-pointer;
+}
+
+.contact__list-item .user__avatar {
+  @apply flex justify-center items-center;
+}
+
+.message__info {
+}
+
+.message__info .sender__info {
+  @apply flex justify-between mb-1;
+}
+
+.message__info .sender__info .sender {
+  @apply font-semibold text-dark-gray font-sans text-sm;
+}
+
+.message__info .sender__info .send__time {
+  @apply text-sm text-dark-gray font-semibold font-sans;
+}
+
+.message__info .message {
+  @apply text-xs text-gray-500 font-semibold font-sans;
+}
+
+.resize__btn {
+  position: absolute;
+  top: 50%;
+  right: -20px;
+  height: 40px;
+  background: #fff;
+  transform: translateY(-50%);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 10px;
+}
