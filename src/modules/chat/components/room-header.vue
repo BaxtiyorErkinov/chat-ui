@@ -1,9 +1,21 @@
+<!-- eslint-disable vue/no-parsing-error -->
 <template>
 	<div class="room__header">
-		<h1 class="room__username">Erkinov Baxtiyor</h1>
-		<p class="room__userstatus"><div class="online__status"/>online</p>
+		<h1 class="room__username">{{props.user.fullName}}</h1>
+		<p class="room__userstatus">
+			<div class="online__status"></div>
+			{{randomStatus}}
+		</p>
 	</div>
 </template>
+
+<script setup lang="ts">
+import type { IUser,IUserStatus } from '@/models/IUser';
+
+const randomStatus:IUserStatus = 'online'
+const props = defineProps<{user: IUser}>()
+
+</script>
 
 <style scoped>
 	.room__header {

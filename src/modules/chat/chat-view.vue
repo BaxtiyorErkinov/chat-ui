@@ -1,51 +1,7 @@
-<script setup lang="ts">
-import chatList from './components/chat-list.vue';
-import { ref, onMounted } from 'vue'
-import appIcon from '@/components/app-icon.vue'
-
-const resizeBtn = ref<HTMLButtonElement | null>(null)
-const resizeBox = ref<HTMLDivElement | null>(null)
-
-var startX: number, startWidth: number
-
-const initDrag = (e) => {
-  startX = e.clientX
-  // @ts-ignore
-  startWidth =
-    document.defaultView &&
-    (parseInt(
-      document.defaultView.getComputedStyle(resizeBox.value as HTMLDivElement).width,
-      10
-    ) as number)
-  document.documentElement.addEventListener('mousemove', onDrag, false)
-  document.documentElement.addEventListener('mouseup', stopDrag, false)
-}
-
-const onDrag = (e) => {
-  console.log('drag', resizeBox.value)
-  console.log("initialWidth",resizeBox.value.clientWidth)
-  if (resizeBox.value?.style) {
-    resizeBox.value.style.width = startWidth + e.clientX - startX + 'px'
-  }
-}
-
-function stopDrag(e) {
-  document.documentElement.removeEventListener('mousemove', onDrag, false)
-  document.documentElement.removeEventListener('mouseup', stopDrag, false)
-}
-
-onMounted(() => {
-  console.log(resizeBtn.value)
-  if (resizeBtn.value) {
-    resizeBtn.value.addEventListener('mousedown', initDrag)
-  }
-})
-</script>
-
 <template>
   <div class="chat__wrapper">
     <div class="all__contacts" ref="resizeBox">
-      <input type="text" class="contacts__filter" placeholder="Search" />
+      <input type="text" class="contacts__filter" placeholder="Search" v-model="chatState.query" />
       <chat-list />
     </div>
     <div class="chat__room">
@@ -56,6 +12,46 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import chatList from './components/chat-list.vue'
+import { ref, onMounted } from 'vue'
+import appIcon from '@/components/app-icon.vue'
+import { useChatState } from './chat.state'
+
+const chatState = useChatState()
+
+const resizeBtn = ref<HTMLButtonElement | null>(null)
+const resizeBox = ref<HTMLDivElement | null>(null)
+
+var startX: number, startWidth: number
+
+const initDrag = (e: MouseEvent): void => {
+  if (resizeBox.value) {
+    startX = e.clientX
+    startWidth = resizeBox.value.getBoundingClientRect().width
+    document.documentElement.addEventListener('mousemove', onDrag, false)
+    document.documentElement.addEventListener('mouseup', stopDrag, false)
+  }
+}
+
+const onDrag = (e: MouseEvent) => {
+  if (resizeBox.value?.style) {
+    resizeBox.value.style.width = startWidth + e.clientX - startX + 'px'
+  }
+}
+
+function stopDrag() {
+  document.documentElement.removeEventListener('mousemove', onDrag, false)
+  document.documentElement.removeEventListener('mouseup', stopDrag, false)
+}
+
+onMounted(() => {
+  if (resizeBtn.value) {
+    resizeBtn.value.addEventListener('mousedown', initDrag)
+  }
+})
+</script>
 
 <style scoped>
 .chat__wrapper {
@@ -68,11 +64,19 @@ onMounted(() => {
 }
 
 .all__contacts {
-  @apply w-6/12 h-full p-4 border-r-2 border-light-gray relative;
+  @apply w-4/12 h-full p-4 border-r-2 border-light-gray relative overflow-auto;
+}
+
+.all__contacts {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.all__contacts::-webkit-scrollbar {
+  display: none;
 }
 
 .chat__room {
-  @apply w-full p-2 relative;
+  @apply flex-1 w-full h-full p-2 relative;
 }
 
 .resize__btn {
